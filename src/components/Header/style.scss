@@ -1,0 +1,17 @@
+@import "../../styles/variables.scss";
+
+.header {
+  background-color: $gray-color;
+  border-radius: 7px;
+  padding: 10px 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.header :last-child {
+  background-color: red;
+}
