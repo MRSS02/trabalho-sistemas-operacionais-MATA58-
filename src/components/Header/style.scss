@@ -3,8 +3,7 @@
 .header {
   background-color: $gray-color;
   border-radius: 7px;
-  padding: 10px 25px;
-
+  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -12,6 +11,28 @@
   gap: 1rem;
 }
 
-.header :last-child {
-  background-color: red;
+.header__inputs {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  input {
+    width: 10%;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid $gray-color;
+    transition: border-color 0.3s ease-in-out;
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+}
+
+.header__buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 50%;
 }

@@ -1,0 +1,32 @@
+@import "../../styles/variables.scss";
+
+.process {
+  background-color: $background-color;
+  color: $white-color;
+  padding: 1rem 1.5rem;
+  border-radius: 7px;
+}
+
+.process__element {
+  label {
+    margin-right: 1rem;
+  }
+
+  input {
+    width: 15%;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid $gray-color;
+    transition: border-color 0.3s ease-in-out;
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+}
+
+.line {
+  width: 10%;
+  height: 2px;
+  background-color: $white-color;
+}
