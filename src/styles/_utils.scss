@@ -1,0 +1,32 @@
+.btn {
+  background-color: $primary-color;
+  color: $white-color;
+  padding: 10px 25px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: $primary-highlight-color;
+  }
+
+  &.active {
+    border: 1px solid $secondary-color;
+    box-shadow: $drop-shadow;
+
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+
+  &.confirm {
+    background-color: $primary-highlight-color;
+  }
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
