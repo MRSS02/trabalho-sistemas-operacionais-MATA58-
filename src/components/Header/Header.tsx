@@ -1,11 +1,23 @@
 import "./style.scss";
+import { useInitialDataStore } from "../../store";
 
 export default function Header() {
+  const numeroDeProcessos = useInitialDataStore(
+    (state) => state.numeroDeProcessos
+  );
+  const setNumeroDeProcessos = useInitialDataStore(
+    (state) => state.setNumeroDeProcessos
+  );
+
   return (
     <div className="header">
       <h2>Informe os Dados</h2>
       <div className="header__inputs">
-        <input type="number" />
+        <input
+          type="number"
+          value={numeroDeProcessos}
+          onChange={(e) => setNumeroDeProcessos(Number(e.target.value))}
+        />
         <label>Nº de Processos</label>
 
         <input type="number" />

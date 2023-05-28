@@ -6,9 +6,9 @@ import ProcessList from "./components/ProcessList/ProcessList";
 export default function App() {
   return (
     <main className="container">
-      <Chart />
       <Header />
       <ProcessList />
+      <Chart />
       <Memory />
     </main>
   );

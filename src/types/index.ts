@@ -2,7 +2,8 @@ export type IntialDataType = {
   numeroDeProcessos: number;
   sobrecarga: number;
   quantum: number;
-  escalonameto: "FIFO" | "SJF" | "Round Robin" | "EDF";
+  escalonameto?: "FIFO" | "SJF" | "Round Robin" | "EDF";
+  setNumeroDeProcessos: (number: number) => void;
 };
 
 export type ProcessDataType = {
