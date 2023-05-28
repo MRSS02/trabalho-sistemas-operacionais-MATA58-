@@ -1,10 +1,5 @@
 import { create } from "zustand";
-import {
-  IntialDataType,
-  EscalonamentoTypes,
-  AllProcessesType,
-  ProcessDataType,
-} from "../types";
+import { IntialDataType, EscalonamentoTypes, ProcessDataType } from "../types";
 
 export const useInitialDataStore = create<IntialDataType>((set) => ({
   numeroDeProcessos: undefined,
@@ -20,7 +15,6 @@ export const useInitialDataStore = create<IntialDataType>((set) => ({
   setInitialDataLock: (initialDataLock: boolean) => set({ initialDataLock }),
 }));
 
-export const useProcessDataStore = create<AllProcessesType>((set) => ({
-  allProcesses: 0,
-  processList: undefined,
-}));
+// export const useProcessDataStore = create<ProcessDataType[] | undefined>((set) => ({
+
+// }));

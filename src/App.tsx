@@ -6,11 +6,14 @@ import { useInitialDataStore } from "./store";
 
 export default function App() {
   const initialDataLock = useInitialDataStore((state) => state.initialDataLock);
+  const numeroDeProcessos = useInitialDataStore(
+    (state) => state.numeroDeProcessos
+  );
 
   return (
     <main className="container">
       <Header />
-      {initialDataLock && <ProcessList />}
+      {initialDataLock && <ProcessList numeroDeProcessos={numeroDeProcessos} />}
       <Chart />
       <Memory />
     </main>

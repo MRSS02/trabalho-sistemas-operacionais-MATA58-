@@ -13,11 +13,6 @@ export type IntialDataType = {
   setInitialDataLock: (bollean: boolean) => void;
 };
 
-export type AllProcessesType = {
-  allProcesses: number;
-  processList?: ProcessDataType[];
-};
-
 export type ProcessDataType = {
   tempoDeChegada?: number;
   TempoDeExecução?: number;
