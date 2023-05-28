@@ -5,15 +5,18 @@
   color: $white-color;
   padding: 1rem 1.5rem;
   border-radius: 7px;
+  box-shadow: $drop-shadow;
 }
 
 .process__element {
-  label {
-    margin-right: 1rem;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
 
   input {
-    width: 15%;
+    width: 55%;
+    height: 50%;
     padding: 10px;
     border-radius: 7px;
     border: 1px solid $gray-color;
@@ -23,10 +26,14 @@
       border-color: $primary-color;
     }
   }
+
+  label {
+    align-self: center;
+  }
 }
 
 .line {
-  width: 10%;
+  width: 50%;
   height: 2px;
   background-color: $white-color;
 }

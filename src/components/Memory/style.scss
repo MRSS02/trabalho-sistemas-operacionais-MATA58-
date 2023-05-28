@@ -1,8 +1,14 @@
 @import "../../styles/variables.scss";
 
-.ram {
+.memory-container {
   background-color: $gray-color;
-  padding: 1rem;
+  border-radius: 7px;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .cell {

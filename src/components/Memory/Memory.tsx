@@ -15,7 +15,7 @@ const cellListDisc = [
 
 export default function Memory() {
   return (
-    <div className="memory">
+    <div className="memory-container">
       <div className="ram">
         <h2>Memória RAM</h2>
         <div className="table">

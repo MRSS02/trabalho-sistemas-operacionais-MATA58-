@@ -5,11 +5,12 @@ export default function ProcessList() {
   return (
     <div className="process-list">
       <h2>Processos</h2>
-      <div className="process-list__container">
+      <div className="list-container">
         <Process />
         <Process />
         <Process />
       </div>
+      <button className="btn confirm align-end ">Iniciar</button>
     </div>
   );
 }
