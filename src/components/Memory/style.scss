@@ -22,10 +22,22 @@
     display: block;
     margin-left: 0.2rem;
   }
+
+  .fill {
+    height: 15px;
+    width: 15px;
+    margin-left: 35%;
+    border-radius: 50%;
+    background-color: $primary-color;
+  }
 }
 
 .table {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   width: 25rem;
+}
+
+.long {
+  grid-template-columns: repeat(15, 1fr);
 }

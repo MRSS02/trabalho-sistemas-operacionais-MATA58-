@@ -9,6 +9,7 @@
   height: 20rem;
   background-color: $light-gray-color;
   margin-bottom: 2rem;
+  margin-top: 1rem;
   display: flex;
 
   &__aside {
@@ -20,6 +21,19 @@
   &__main {
     flex: 8;
   }
+}
+
+.bottom {
+  background-color: $primary-color;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.grid {
+  height: 50px;
+  width: 50px;
+  border: 1px solid #000;
 }
 
 footer {

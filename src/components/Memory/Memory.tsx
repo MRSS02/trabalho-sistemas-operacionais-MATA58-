@@ -27,7 +27,7 @@ export default function Memory() {
 
       <div className="disc">
         <h2>Disco</h2>
-        <div className="table">
+        <div className="table long">
           {cellListDisc.map((cell) => {
             return <MemoryCell key={cell} cell={cell} />;
           })}
@@ -41,6 +41,7 @@ const MemoryCell = (props: any) => {
   return (
     <div className="cell">
       <span>{props.cell}</span>
+      <div className="fill" />
     </div>
   );
 };
