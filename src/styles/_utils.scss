@@ -3,7 +3,7 @@
   color: $white-color;
   padding: 10px 25px;
   border-radius: 18px;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
 
@@ -23,6 +23,14 @@
   &.confirm {
     background-color: $primary-highlight-color;
   }
+
+  &.clear {
+    background-color: $sobrecarga-color;
+  }
+
+  &:disabled {
+    background-color: $background-color;
+  }
 }
 
 h2 {
@@ -33,4 +41,8 @@ h2 {
 
 .align-end {
   align-self: flex-end;
+}
+
+.ml-1 {
+  margin-left: 1rem;
 }

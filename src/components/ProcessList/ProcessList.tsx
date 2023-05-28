@@ -1,7 +1,10 @@
+import { useProcessDataStore } from "../../store";
 import Process from "./Process/Process";
 import "./style.scss";
 
 export default function ProcessList() {
+  const processData = useProcessDataStore();
+
   return (
     <div className="process-list">
       <h2>Processos</h2>
