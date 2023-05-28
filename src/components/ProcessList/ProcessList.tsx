@@ -1,4 +1,4 @@
-import Process from "../Process/Process";
+import Process from "./Process/Process";
 import "./style.scss";
 
 export default function ProcessList() {
