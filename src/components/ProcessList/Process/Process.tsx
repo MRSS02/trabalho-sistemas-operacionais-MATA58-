@@ -1,6 +1,6 @@
 import "./style.scss";
 
-export default function Process() {
+export default function Process({data}: any) {
   return (
     <div className="process">
       <h2>P1</h2>

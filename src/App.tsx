@@ -2,20 +2,32 @@ import Chart from "./components/Chart/Chart";
 import Header from "./components/Header/Header";
 import Memory from "./components/Memory/Memory";
 import ProcessList from "./components/ProcessList/ProcessList";
-import { useInitialDataStore } from "./store";
+import { useState, useContext, createContext } from "react";
+import { ProcessProvider } from './Providers/ProcessProvider'
 
 export default function App() {
-  const initialDataLock = useInitialDataStore((state) => state.initialDataLock);
-  const numeroDeProcessos = useInitialDataStore(
-    (state) => state.numeroDeProcessos
-  );
 
+  const [processStart, setProcessStart] = useState(false)
+  const [numeroDeProcessos, setNumeroDeProcessos] = useState(0)
+  const [sobrecarga, setSobrecarga] = useState(0)
+  const [quantum, setQuantum] = useState(0)
+  const [escalonamento, setEscalonamento] = useState("")
+  const [processData, setProcessData] = useState([])
+    
   return (
     <main className="container">
-      <Header />
-      {initialDataLock && <ProcessList numeroDeProcessos={numeroDeProcessos} />}
-      <Chart />
-      <Memory />
+      <ProcessProvider.Provider value={
+      {processStart, setProcessStart,
+      numeroDeProcessos, setNumeroDeProcessos, 
+      sobrecarga, setSobrecarga, quantum, 
+      setQuantum, escalonamento, setEscalonamento,
+      processData, setProcessData
+      }}>
+        <Header />
+        {processStart && <ProcessList /> }
+        {processStart && <Chart /> }
+        {processStart && <Memory /> }
+      </ProcessProvider.Provider>
     </main>
   );
 }
