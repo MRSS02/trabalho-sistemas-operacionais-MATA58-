@@ -1,9 +1,37 @@
 @import "../../styles/variables.scss";
 
+.processes {
+	display: table;
+
+    tr {
+	display: table-cell;
+    }
+    tr td {
+	display: block;
+    }
+}
+
+
 .chart-container {
   background-color: $gray-color;
   padding: 3rem;
 }
+
+.grid_item {
+    width: 60px;
+    height: 60px;
+    border-radius: 0;
+    margin: 0;
+  }
+
+.ui_item {
+    width: 200px;
+    height: 60px;
+    border-radius: 0;
+    margin: 0;
+    color: black;
+    text-align: center
+  }
 
 .chart {
   height: 20rem;
