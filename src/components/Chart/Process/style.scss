@@ -1,0 +1,63 @@
+@import "../../../styles/variables";
+
+.process {
+  background-color: $background-color;
+  color: $white-color;
+  padding: 1rem 1.5rem;
+  border-radius: 7px;
+  box-shadow: $drop-shadow;
+}
+
+.process__element {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+
+  input {
+    width: 55%;
+    height: 50%;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid $gray-color;
+    transition: border-color 0.3s ease-in-out;
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+
+  label {
+    align-self: center;
+  }
+}
+
+.line {
+  width: 50%;
+  height: 2px;
+  background-color: $white-color;
+}
+
+.box {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    margin-left: 5rem;
+  }
+
+.green {
+    background-color: $executando-color;
+  }
+
+  .red {
+    background-color: $sobrecarga-color;
+  }
+
+  .black {
+    background-color: $black-color;
+  }
+
+.align-end {
+    align: end; 
+    justify-content: end
+}

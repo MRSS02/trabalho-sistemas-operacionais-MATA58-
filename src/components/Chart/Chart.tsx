@@ -1,6 +1,8 @@
 import "./style.scss";
-import { useState, useContext } from 'react';
- import { ProcessProvider } from '../../Providers/ProcessProvider'
+import { useEffect, useContext } from 'react';
+import { ProcessProvider } from '../../Providers/ProcessProvider'
+import { ProcessDataType } from '../../types'
+import Process from './Process'
 
 export default function Chart() {  
    
@@ -10,20 +12,13 @@ export default function Chart() {
     <div className="chart-container">
       <h2>Escalonamento</h2>
 
+      <h3>Tempo: { processValues.time }</h3>
       <div className="chart">
         <div className="chart__aside">
           <div className="top">
+            
             <div className="grid">
-                {
-                    [...Array(processValues.processData)].map((e, i:any) => 
-                    <div className="lanes" key={i[0]}>
-                        <span>{i[1]}</span>
-                        <span>{i[2]}</span>
-                        <span>{i[3]}</span>
-                        <span>{i[4]}</span>
-                    </div>
-                    )
-                }
+                
             </div>
           </div>
           <div className="bottom">
@@ -37,6 +32,16 @@ export default function Chart() {
         <div className="chart__main"></div>
       </div>
 
+      <div className="list-container">
+        {processValues.processData.map((item:ProcessDataType, index:number) => {
+                 
+                return(
+                    <Process data={item} index={index} />
+                )}
+                )
+            }
+      </div>
+
       <footer>
         <div className="turnaround">Turnaround Médio: X</div>
         <div className="legends">
@@ -48,6 +53,7 @@ export default function Chart() {
           Deadline
         </div>
       </footer>
+      
     </div>
   );
 }
