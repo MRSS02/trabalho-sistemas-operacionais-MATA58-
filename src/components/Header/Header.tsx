@@ -12,7 +12,7 @@ export default function Header() {
           let processes:Array<any> = []
           for (let i = 0; i < processValues.numeroDeProcessos; i++) {
                     processes.push({ 
-                        state: 'espera', ownQuantum: processValues.quantum,
+                        state: 'a caminho', ownQuantum: processValues.quantum,
                         arriveTime: 0, overload: processValues.sobrecarga, 
                         executionTime: 0, deadline: 0, pages: 0})
               }
@@ -21,6 +21,7 @@ export default function Header() {
   }
 
   function stopExecution() {
+         processValues.setTime(1)
          processValues.setProcessSelection(false)
          processValues.setProcessStart(false)
          processValues.setNumeroDeProcessos(0)
@@ -31,6 +32,7 @@ export default function Header() {
          processValues.setProcessData([])
          processValues.setMemoryMap([])
          processValues.setDiskTable([])
+         processValues.setExecutionHistory([])
 
       }
 

@@ -8,7 +8,7 @@ import { EscalonamentoTypes } from './types'
 
 export default function App() {
 
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState(1)
   const [processSelection, setProcessSelection] = useState(false)
   const [processStart, setProcessStart] = useState(false)
   const [numeroDeProcessos, setNumeroDeProcessos] = useState(0)
@@ -19,6 +19,7 @@ export default function App() {
   const [memoryMap, setMemoryMap] = useState([])
   const [diskTable, setDiskTable] = useState([])
   const [queue, setQueue] = useState([])
+  const [executionHistory, setExecutionHistory] = useState([])
     
   return (
     <main className="container">
@@ -30,7 +31,8 @@ export default function App() {
       setQuantum, escalonamento, setEscalonamento,
       processData, setProcessData, memoryMap,
       setMemoryMap, diskTable, setDiskTable,
-      queue, setQueue
+      queue, setQueue, executionHistory,
+      setExecutionHistory
       }}>
         <Header />
         {processSelection && <ProcessList /> }

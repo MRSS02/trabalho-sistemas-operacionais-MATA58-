@@ -23,7 +23,9 @@ export interface ContextInterface {
     diskTable: Array<number>,
     setDiskTable: Function,
     queue: Array<number>,
-    setQueue: Function
+    setQueue: Function,
+    executionHistory: Array<Array<string>>,
+    setExecutionHistory: Function,
   }
 
 export const ProcessProvider = createContext<ContextInterface>({
@@ -49,5 +51,7 @@ export const ProcessProvider = createContext<ContextInterface>({
       setDiskTable: (diskTable: []) => {},
       queue: [],
       setQueue: (diskTable: []) => {},
+      executionHistory: [],
+      setExecutionHistory: (diskTable: []) => {}, 
 
 })

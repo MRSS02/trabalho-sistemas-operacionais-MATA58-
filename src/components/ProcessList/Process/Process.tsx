@@ -1,12 +1,12 @@
 import "./style.scss";
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { ProcessProvider } from "../../../Providers/ProcessProvider"
 import { ProcessDataType, ProcessProps } from '../../../types'
 
 export default function Process({ data, index }: ProcessProps) {
 
   const processValues = useContext(ProcessProvider)
- 
+
   return (
     <div className="process">
       <h2>P{index}</h2>
@@ -21,6 +21,7 @@ export default function Process({ data, index }: ProcessProps) {
                 processValues.setProcessData(processDataCopy)
                 console.log(processValues.processData[index])
             }}
+            disabled={processValues.processStart}
 
         />
         <div className="line"></div>
@@ -34,7 +35,7 @@ export default function Process({ data, index }: ProcessProps) {
                 processDataCopy[index].executionTime = Number(e.target.value)
                 processValues.setProcessData(processDataCopy)
             }}
-
+            disabled={processValues.processStart}
         />
         <div className="line"></div>
       </div> 
@@ -48,6 +49,7 @@ export default function Process({ data, index }: ProcessProps) {
                 processValues.setProcessData(processDataCopy)
             }        
             }
+        disabled={processValues.processStart}
         />
         <div className="line"></div>
       </div>
@@ -59,8 +61,8 @@ export default function Process({ data, index }: ProcessProps) {
                 const processDataCopy = [...processValues.processData]
                 processDataCopy[index].pages = Number(e.target.value)
                 processValues.setProcessData(processDataCopy)
-            }
-            }/>
+            }}
+            disabled={processValues.processStart}/>
       </div>
     </div>
   );
