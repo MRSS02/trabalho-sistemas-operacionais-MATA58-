@@ -6,8 +6,6 @@ import { ProcessDataType, ProcessProps } from '../../../types'
 export default function Process({ data, index }: ProcessProps) {
 
   const processValues = useContext(ProcessProvider)
-
-  console.log("aaaaa", index)
  
   return (
     <div className="process">

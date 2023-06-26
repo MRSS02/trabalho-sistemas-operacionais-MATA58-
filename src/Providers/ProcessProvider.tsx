@@ -1,11 +1,13 @@
 import { createContext } from 'react'
 import { ProcessDataType, EscalonamentoTypes } from '../types' 
 
-interface ContextInterface {
+export interface ContextInterface {
     processSelection: boolean,
     setProcessSelection: Function,
     processStart: boolean,
-    setProcessStart: Function, 
+    setProcessStart: Function,
+    time: number,
+    setTime: Function,
     numeroDeProcessos: number,
     setNumeroDeProcessos: Function, 
     sobrecarga: number,
@@ -20,6 +22,8 @@ interface ContextInterface {
     setMemoryMap: Function,
     diskTable: Array<number>,
     setDiskTable: Function,
+    queue: Array<number>,
+    setQueue: Function
   }
 
 export const ProcessProvider = createContext<ContextInterface>({
@@ -27,6 +31,8 @@ export const ProcessProvider = createContext<ContextInterface>({
       setProcessSelection:  (processSelection: false) => {},
       processStart: false, 
       setProcessStart: (processStart: false) => {},
+      time: 0,
+      setTime: (time: 0) => {},
       numeroDeProcessos: 0, 
       setNumeroDeProcessos: (numeroDeProcessos: 0) => {}, 
       sobrecarga: 0,
@@ -41,4 +47,7 @@ export const ProcessProvider = createContext<ContextInterface>({
       setMemoryMap:  (memoryMap: []) => {},
       diskTable: [],
       setDiskTable: (diskTable: []) => {},
+      queue: [],
+      setQueue: (diskTable: []) => {},
+
 })

@@ -12,8 +12,9 @@ export default function Header() {
           let processes:Array<any> = []
           for (let i = 0; i < processValues.numeroDeProcessos; i++) {
                     processes.push({ 
-                        arriveTime: 0, executionTime: 0, 
-                        deadline: 0, pages: 0})
+                        state: 'espera', ownQuantum: processValues.quantum,
+                        arriveTime: 0, overload: processValues.sobrecarga, 
+                        executionTime: 0, deadline: 0, pages: 0})
               }
           processValues.setProcessData(processes)
           processValues.setProcessSelection(true)

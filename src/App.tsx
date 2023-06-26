@@ -8,6 +8,7 @@ import { EscalonamentoTypes } from './types'
 
 export default function App() {
 
+  const [time, setTime] = useState(0)
   const [processSelection, setProcessSelection] = useState(false)
   const [processStart, setProcessStart] = useState(false)
   const [numeroDeProcessos, setNumeroDeProcessos] = useState(0)
@@ -17,17 +18,19 @@ export default function App() {
   const [processData, setProcessData] = useState([])
   const [memoryMap, setMemoryMap] = useState([])
   const [diskTable, setDiskTable] = useState([])
+  const [queue, setQueue] = useState([])
     
   return (
     <main className="container">
       <ProcessProvider.Provider value={
-      {processSelection, setProcessSelection,
-      processStart, setProcessStart,
+      {time, setTime, processSelection, 
+      setProcessSelection, processStart, setProcessStart,
       numeroDeProcessos, setNumeroDeProcessos, 
       sobrecarga, setSobrecarga, quantum, 
       setQuantum, escalonamento, setEscalonamento,
       processData, setProcessData, memoryMap,
-      setMemoryMap, diskTable, setDiskTable
+      setMemoryMap, diskTable, setDiskTable,
+      queue, setQueue
       }}>
         <Header />
         {processSelection && <ProcessList /> }
