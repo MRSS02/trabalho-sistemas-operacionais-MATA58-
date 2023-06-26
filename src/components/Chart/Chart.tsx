@@ -19,10 +19,10 @@ export default function Chart() {
                 switch (processValues.escalonamento) {
                 case 'FIFO': 
                 const currentExecution:Array<string> = []
-                if (executionHistoryCopy.length === 0 && processValues.time == 0) {
+                if (executionHistoryCopy.length === 0 && processValues.time === 1) {
                 for (let i = 0; i < processDataCopy.length; i++) {
                 if (processDataCopy[i].arriveTime === 0) {
-                    console.log("teste", processDataCopy[i].state)
+                    console.log("teste", processDataCopy[i].arriveTime)
                 processDataCopy[i].state = 'executando';
                 break;
                 }
@@ -193,7 +193,7 @@ export default function Chart() {
                         processValues.setExecutionHistory(executionHistoryCopy)
                             let allFinished = true
                             for (let i = 0; i < processValues.processData.length; i++) {
-                                if (processValues.processData[i].state !== 'finalizado') {
+                                if (processValues.processData[i].executionTime !== 0) {
                                     allFinished = false;
                                     break;
                                 }
@@ -257,15 +257,16 @@ export default function Chart() {
         </div>
         </div>
 
+        <h2>Fila</h2>
         <div className="list-container">
-        {processValues.processData.map((item:ProcessDataType, index:number) => {
-
-                if (item.state === 'finalizado') return (<></>); 
-                else return(
-                        <Process data={item} index={index} />
-                        )}
+         {processValues.queue.map((item:number, index:number) => {
+                return(
+                    <Process data={processValues.processData[item]} index={item} />
+                )}
                 )
-        }
+            }
+        
+
     </div>
 
         <footer>
