@@ -16,13 +16,14 @@ export default function Chart() {
 
                 console.log(processValues.time, processValues.processData)
 
+                const currentExecution:Array<string> = []
+
                 switch (processValues.escalonamento) {
-                case 'FIFO': 
+                case 'FIFO': { 
                 const currentExecution:Array<string> = []
                 if (executionHistoryCopy.length === 0 && processValues.time === 1) {
                 for (let i = 0; i < processDataCopy.length; i++) {
                 if (processDataCopy[i].arriveTime === 0) {
-                    console.log("teste", processDataCopy[i].arriveTime)
                 processDataCopy[i].state = 'executando';
                 break;
                 }
@@ -55,35 +56,53 @@ export default function Chart() {
                     processDataCopy[queue[0]].state = 'executando';  
                     processDataCopy[queue[0]].executionTime -= 1
                 }
-                break;
-                case 'SJF':
+                break; }
+                case 'SJF': {
+                const currentExecution:Array<string> = []
                 for (let i = 0; i < processDataCopy.length; i++) {
                     if (processDataCopy[i].arriveTime > 0) {
                         processDataCopy[i].arriveTime -= 1
                     } else {
-                        if (!queue.includes(i)) queue.push(i)      
+                        if (processDataCopy[i].state === 'a caminho') 
+                            processDataCopy[i].state = 'espera'
+                                if (!queue.includes(i) && 
+                                        processDataCopy[i].state !== 'finalizado') {
+                                        queue.push(i)
+                                        for (let i = queue.length - 1; i > 0; i--) {
+                                            if(processDataCopy[queue[i]].state !== 'executando' &&
+                                            processDataCopy[queue[i - 1]].state !== 'executando' &&
+                                            processDataCopy[queue[i]].executionTime < 
+                                            processDataCopy[queue[i - 1]].executionTime) 
+                                                [queue[i], queue[i - 1]] = [queue[i - 1], queue[i]]
+                                            else if (i > 1 && processDataCopy[queue[i - 1]].state !== 'executando' &&
+                                            processDataCopy[queue[i]].executionTime < 
+                                            processDataCopy[queue[i - 2]].executionTime)
+                                                [queue[i], queue[i - 2]] = [queue[i - 2], queue[i]]
+                                        }
+                                    }
+                                    if (processDataCopy[i].state === 'executando' &&
+                                            processDataCopy[i].executionTime === 0)
+                                        processDataCopy[i].state = 'finalizado'
                     }    
                 }
-                for (let i = 0; i < queue.length; i++) {
-                    let faster:number = processDataCopy[i].executionTime 
-                        for (let j = queue.length - 1; j > i; j--) {
-                            if (processDataCopy[j].executionTime < faster)
-                                faster = j
-                        }
-                    let aux:ProcessDataType = processDataCopy[i]
-                        processDataCopy[i] = processDataCopy[faster]
-                        processDataCopy[faster] = aux
+                if (executionHistoryCopy.length === 0 && processValues.time === 1) {
+                processDataCopy[queue[0]].state = 'executando'               
+                for (let i = 0; i < processDataCopy.length; i++) {
+                currentExecution.push(processDataCopy[i].state)
+                }
+                executionHistoryCopy.push(currentExecution)
                 }
                 if (queue[0] === undefined) break;
                 if (processDataCopy[queue[0]].executionTime === 0) {
-                    processDataCopy.splice(queue[0], 1)
-                        queue.shift()
+                    queue.shift()
                         if (queue[0] === undefined) break;
-                    processDataCopy[queue[0]].state = 'executando';
+                    processDataCopy[queue[0]].state = 'executando';  
+                    processDataCopy[queue[0]].executionTime -= 1
                 } else {
+                    processDataCopy[queue[0]].state = 'executando';  
                     processDataCopy[queue[0]].executionTime -= 1
                 }
-                break;
+                break; }
                 case 'Round Robin':
                 for (let i = 0; i < processDataCopy.length; i++) {
                     if (processDataCopy[i].arriveTime > 0) {
@@ -184,7 +203,7 @@ export default function Chart() {
                 processValues.setProcessData(processDataCopy)
                     processValues.setQueue(queue)
 
-                    const currentExecution:Array<string> = []
+                    
                     for (let i = 0; i < processDataCopy.length; i++) {
                         currentExecution.push(processDataCopy[i].state)
                     } 
