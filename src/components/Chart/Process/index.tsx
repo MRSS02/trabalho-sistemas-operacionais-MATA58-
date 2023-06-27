@@ -32,6 +32,8 @@ export default function Process({ data, index }: ProcessProps) {
         <label>Páginas</label>
             { processValues.processData[index].pages }
         </div>
+      {processValues.processData[index].brokeDeadline && 
+      <h3 className="red-text">QUEBROU DEADLINE</h3>}
     </div>
   );
 }

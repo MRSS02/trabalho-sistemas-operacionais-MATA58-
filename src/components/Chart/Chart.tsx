@@ -10,7 +10,7 @@ export default function Chart() {
 
         useEffect(() => {
 
-                const queue:Array<number> = processValues.queue;
+                const queue:Array<number> = [...processValues.queue];
                 const processDataCopy = [...processValues.processData]
                 const executionHistoryCopy = [...processValues.executionHistory]
 
@@ -103,47 +103,136 @@ export default function Chart() {
                     processDataCopy[queue[0]].executionTime -= 1
                 }
                 break; }
-                case 'Round Robin':
+                case 'Round Robin': {
+                const currentExecution:Array<string> = []
+                if (executionHistoryCopy.length === 0 && processValues.time === 1) {
+                for (let i = 0; i < processDataCopy.length; i++) {
+                if (processDataCopy[i].arriveTime === 0) {
+                processDataCopy[i].state = 'executando';
+                break;
+                }
+                }
+                for (let i = 0; i < processDataCopy.length; i++) {
+                currentExecution.push(processDataCopy[i].state)
+                }
+                executionHistoryCopy.push(currentExecution)
+                }
                 for (let i = 0; i < processDataCopy.length; i++) {
                     if (processDataCopy[i].arriveTime > 0) {
                         processDataCopy[i].arriveTime -= 1
                     } else {
-                        if (!queue.includes(i)) queue.push(i)      
+                        if (processDataCopy[i].state === 'a caminho') 
+                            processDataCopy[i].state = 'espera'
+                                if (processDataCopy[i].state === 'executando' &&
+                                            processDataCopy[i].executionTime === 0)
+                                        processDataCopy[i].state = 'finalizado'
+                                if (!queue.includes(i) && 
+                                        processDataCopy[i].state !== 'finalizado') queue.push(i)
+                                    
                     }    
                 }
                 if (queue[0] === undefined) break;
-                if (processDataCopy[queue[0]].executionTime === 0) {
-                    processDataCopy.splice(queue[0], 1)
-                        queue.shift()
-                        if (queue[0] === undefined) break;
-                    processDataCopy[queue[0]].state = 'executando';
-                }
-                if (processDataCopy[queue[0]].ownQuantum !== 0 &&
-                        processDataCopy[queue[0]].state === 'executando') {
-                    processDataCopy[queue[0]].ownQuantum -= 1
-                        processDataCopy[queue[0]].executionTime -= 1
-                }
-                if (processDataCopy[queue[0]].ownQuantum === 0 &&
-                        processDataCopy[queue[0]].state === 'executando') {
-                    processDataCopy[queue[0]].state = 'espera';
+                if (processDataCopy[queue[queue.length - 1]].state === 'executando' &&
+                processDataCopy[queue[queue.length - 1]].ownQuantum === 0) {
+                    processDataCopy[queue[queue.length - 1]].state = 'espera'
                     processDataCopy[queue[0]].ownQuantum = processValues.quantum;
-                    queue.push(queue[0])
-                        queue.shift();
-                    if (queue[0] === undefined) break;
+                }
+                if (processDataCopy[queue[0]].overload > 0) {
+                    console.log(processDataCopy[queue[0]].overload)
                     processDataCopy[queue[0]].state = 'sobrecarga';
+                    processDataCopy[queue[0]].overload -= 1;
+                    break
+                }
+                processDataCopy[queue[0]].state = 'executando';  
+                processDataCopy[queue[0]].executionTime -= 1;
+                processDataCopy[queue[0]].ownQuantum -= 1;
+                if (processDataCopy[queue[0]].executionTime === 0) {
+                    queue.shift()
+                    if (queue[0] === undefined) break;
+                } else if (processDataCopy[queue[0]].ownQuantum === 0) {
+                        queue.push(queue[0]);
+                        queue.shift();
+                        processDataCopy[queue[0]].overload =  processValues.sobrecarga;
 
                 }
-                if (processDataCopy[queue[0]].overload !== 0 &&
-                        processDataCopy[queue[0]].state === 'sobrecarga') {
-                    processDataCopy[queue[0]].overload -= 1
-                }
-                if (processDataCopy[queue[0]].overload !== 0 &&
-                        processDataCopy[queue[0]].state === 'sobrecarga') {
-                    processDataCopy[queue[0]].state = 'executando'
-                } 
-                break;
+                break; }
                 case 'EDF':
+                 const currentExecution:Array<string> = []
+                 for (let i = 0; i < processDataCopy.length; i++) {
+                    if (processDataCopy[i].arriveTime > 0) {
+                        processDataCopy[i].arriveTime -= 1
+                    } else {
+                        if (processDataCopy[i].state === 'a caminho') 
+                            processDataCopy[i].state = 'espera'
+                                if (processDataCopy[i].state === 'executando' &&
+                                            processDataCopy[i].executionTime === 0)
+                                        processDataCopy[i].state = 'finalizado'
+                                if (!queue.includes(i) && 
+                                        processDataCopy[i].state !== 'finalizado') 
+                                queue.push(i) 
+                                for (let i = queue.length - 1; i > 0; i--) {
+                                            if((processDataCopy[queue[i]].state !== 'executando' ||
+                                            processDataCopy[queue[i]].overload > 0) &&
+                                            (processDataCopy[queue[i - 1]].state !== 'executando' ||
+                                            processDataCopy[queue[i - 1]].overload > 0) &&
+                                            processDataCopy[queue[i]].deadline < 
+                                            processDataCopy[queue[i - 1]].deadline) 
+                                                [queue[i], queue[i - 1]] = [queue[i - 1], queue[i]]
+                                            else if (i > 1 && (processDataCopy[queue[i - 1]].state !== 'executando' 
+                                            || processDataCopy[queue[i - 1]].overload > 0) && processDataCopy[queue[i]].deadline < 
+                                            processDataCopy[queue[i - 2]].deadline)
+                                                [queue[i], queue[i - 2]] = [queue[i - 2], queue[i]]
+                                        }
+                                    
+                    }    
+                }
+                if (executionHistoryCopy.length === 0 && processValues.time === 1) {
+                //processDataCopy[queue[0]].state = 'executando'               
                 for (let i = 0; i < processDataCopy.length; i++) {
+                currentExecution.push(processDataCopy[i].state)
+                }
+                executionHistoryCopy.push(currentExecution)
+                }
+                if (queue[0] === undefined) break;
+                if (processDataCopy[queue[queue.length - 1]].state === 'executando' &&
+                processDataCopy[queue[queue.length - 1]].ownQuantum === 0) {
+                    processDataCopy[queue[queue.length - 1]].state = 'espera'
+                    processDataCopy[queue[0]].ownQuantum = processValues.quantum;
+                }
+                if (processDataCopy[queue[0]].overload > 0) {
+                    processDataCopy[queue[0]].state = 'sobrecarga';
+                    processDataCopy[queue[0]].overload -= 1;
+                    break
+                }
+                console.log(processDataCopy)
+                processDataCopy[queue[0]].state = 'executando';  
+                processDataCopy[queue[0]].executionTime -= 1;
+                processDataCopy[queue[0]].ownQuantum -= 1;
+                for (let i = 0; i < queue.length; i++) {
+                    if (i > 0 && 
+                    processDataCopy[queue[i]].state === 'executando') 
+                    processDataCopy[queue[i]].state = 'espera'
+                }
+                if (processDataCopy[queue[0]].executionTime === 0) {
+                    queue.shift()
+                    if (queue[0] === undefined) break;
+                } else if (processDataCopy[queue[0]].ownQuantum === 0) {
+                        queue.push(queue[0]);
+                        queue.shift();
+                        processDataCopy[queue[0]].overload =  processValues.sobrecarga;
+
+                }
+
+                for (let i = 0; i < queue.length; i++) {
+                    if (processDataCopy[queue[i]].deadline > 0
+                    && processDataCopy[queue[i]].executionTime !== 0) {
+                        processDataCopy[queue[i]].deadline -= 1;
+                    } else {
+                        processDataCopy[queue[i]].brokeDeadline = true;        
+                    }
+                }
+
+                /* for (let i = 0; i < processDataCopy.length; i++) {
                     if (processDataCopy[i].arriveTime === 0 &&
                             processDataCopy[i].deadline > 0) {
                         processDataCopy[i].deadline -= 1
@@ -198,7 +287,7 @@ export default function Chart() {
                 } 
 
 
-                break;
+                break; */
                 }
                 processValues.setProcessData(processDataCopy)
                     processValues.setQueue(queue)
@@ -218,7 +307,7 @@ export default function Chart() {
                                 }
                             }
                 if (!allFinished) setTimeout(() => 
-                        processValues.setTime(prevTime => prevTime + 1), 1000)
+                        processValues.setTime((prevTime:number) => prevTime + 1), 1000)
 
         }, [processValues.time]) 
 
@@ -238,7 +327,8 @@ export default function Chart() {
                     return(<tr>
                             <td className="ui_item">{item.arriveTime}</td>
                             <td className="ui_item">{item.executionTime}</td>
-                            <td className="ui_item">{item.deadline}</td>
+                            <td className={`ui_item ${item.brokeDeadline && "red-text"}`}>
+                            {item.deadline}</td>
                             <td className="ui_item">{index}</td>
                             </tr>
                           )
