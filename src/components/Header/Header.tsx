@@ -4,7 +4,7 @@ import { useInitialDataStore } from "../../store";
 import { ProcessProvider } from "../../Providers/ProcessProvider"  
 
 
-export default function Header() {
+export default function Header({onReset}:any) {
 
   const processValues = useContext(ProcessProvider)
 
@@ -13,18 +13,21 @@ export default function Header() {
           for (let i = 0; i < processValues.numeroDeProcessos; i++) {
                     processes.push({ 
                         state: 'a caminho', ownQuantum: processValues.quantum,
-                        arriveTime: 0, overload: processValues.sobrecarga, 
-                        executionTime: 0, deadline: 0, pages: 0})
+                        arriveTime: 0, overload: 0, executionTime: 0, 
+                        deadline: 0, pages: 0, brokeDeadline: false})
               }
           processValues.setProcessData(processes)
           processValues.setProcessSelection(true)
   }
 
   function stopExecution() {
+          
+         window.location.reload()
+         /* onReset()
+         processValues.setProcessSelection(false)
+         processValues.setProcessStart(false) 
          processValues.setTime(1)
          processValues.setProcessData([])
-         processValues.setProcessSelection(false)
-         processValues.setProcessStart(false)
          processValues.setNumeroDeProcessos(0)
          processValues.setSobrecarga(0)
          processValues.setQuantum(0)
@@ -33,7 +36,7 @@ export default function Header() {
          processValues.setProcessData([])
          processValues.setMemoryMap([])
          processValues.setDiskTable([])
-         processValues.setExecutionHistory([])
+         processValues.setExecutionHistory([]) */
 
       }
 

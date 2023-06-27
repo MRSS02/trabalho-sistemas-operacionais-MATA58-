@@ -7,6 +7,7 @@ export type ProcessDataType = {
   arriveTime: number;
   executionTime: number;
   deadline: number;
+  brokeDeadline: boolean;
   pages: number;
 };
 

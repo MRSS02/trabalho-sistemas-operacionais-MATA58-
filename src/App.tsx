@@ -3,11 +3,12 @@ import Header from "./components/Header/Header";
 import Memory from "./components/Memory/Memory";
 import ProcessList from "./components/ProcessList/ProcessList";
 import { useState, useContext, createContext } from "react";
-import { ProcessProvider } from './Providers/ProcessProvider';
+import { ProcessProvider, ContextInterface } from './Providers/ProcessProvider';
 import { EscalonamentoTypes } from './types' 
 
 export default function App() {
 
+  const [resetValue, setResetValue] = useState(0)
   const [time, setTime] = useState(1)
   const [processSelection, setProcessSelection] = useState(false)
   const [processStart, setProcessStart] = useState(false)
@@ -20,11 +21,7 @@ export default function App() {
   const [diskTable, setDiskTable] = useState([])
   const [queue, setQueue] = useState([])
   const [executionHistory, setExecutionHistory] = useState([])
-    
-  return (
-    <main className="container">
-      <ProcessProvider.Provider value={
-      {time, setTime, processSelection, 
+  const values:ContextInterface = {time, setTime, processSelection, 
       setProcessSelection, processStart, setProcessStart,
       numeroDeProcessos, setNumeroDeProcessos, 
       sobrecarga, setSobrecarga, quantum, 
@@ -33,11 +30,19 @@ export default function App() {
       setMemoryMap, diskTable, setDiskTable,
       queue, setQueue, executionHistory,
       setExecutionHistory
-      }}>
-        <Header />
-        {processSelection && <ProcessList /> }
-        {processStart && <Chart /> }
-        {processStart && <Memory /> }
+      }
+    
+   function resetComponent() {
+        setResetValue(old => old + 1)
+    } 
+
+  return (
+    <main className="container">
+      <ProcessProvider.Provider value={values}>
+        <Header onReset={resetComponent}/>
+        {processSelection && <ProcessList key={resetValue} /> }
+        {processStart && <Chart key={resetValue + 1}/> }
+        {processStart && <Memory key={resetValue + 2}/> }
       </ProcessProvider.Provider>
     </main>
   );
