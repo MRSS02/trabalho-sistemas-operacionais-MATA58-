@@ -22,6 +22,7 @@ export default function Header() {
 
   function stopExecution() {
          processValues.setTime(1)
+         processValues.setProcessData([])
          processValues.setProcessSelection(false)
          processValues.setProcessStart(false)
          processValues.setNumeroDeProcessos(0)
