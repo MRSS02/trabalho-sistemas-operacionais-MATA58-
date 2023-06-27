@@ -9,6 +9,7 @@ import { EscalonamentoTypes } from './types'
 export default function App() {
 
   const [resetValue, setResetValue] = useState(0)
+  const [turnaround, setTurnaround] = useState(0)
   const [time, setTime] = useState(1)
   const [processSelection, setProcessSelection] = useState(false)
   const [processStart, setProcessStart] = useState(false)
@@ -29,7 +30,8 @@ export default function App() {
       processData, setProcessData, memoryMap,
       setMemoryMap, diskTable, setDiskTable,
       queue, setQueue, executionHistory,
-      setExecutionHistory
+      setExecutionHistory, turnaround,
+      setTurnaround
       }
     
    function resetComponent() {

@@ -26,6 +26,8 @@ export interface ContextInterface {
     setQueue: Function,
     executionHistory: Array<Array<string>>,
     setExecutionHistory: Function,
+    turnaround: number,
+    setTurnaround: Function
   }
 
 export const ProcessProvider = createContext<ContextInterface>({
@@ -52,6 +54,7 @@ export const ProcessProvider = createContext<ContextInterface>({
       queue: [],
       setQueue: (diskTable: []) => {},
       executionHistory: [],
-      setExecutionHistory: (diskTable: []) => {}, 
-
+      setExecutionHistory: (diskTable: []) => {},
+      turnaround: 0,
+      setTurnaround: (turnaround: []) => {}
 })

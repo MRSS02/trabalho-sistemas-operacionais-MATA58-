@@ -14,7 +14,8 @@ export default function Header({onReset}:any) {
                     processes.push({ 
                         state: 'a caminho', ownQuantum: processValues.quantum,
                         arriveTime: 0, overload: 0, executionTime: 0, 
-                        deadline: 0, pages: 0, brokeDeadline: false})
+                        deadline: 0, pages: 0, brokeDeadline: false,
+                        turnaround: 0})
               }
           processValues.setProcessData(processes)
           processValues.setProcessSelection(true)

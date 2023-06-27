@@ -17,8 +17,10 @@ export default function ProcessList() {
           let processes:Array<any> = []
           for (let i = 0; i < processValues.numeroDeProcessos; i++) {
                     processes.push({ 
-                        arriveTime: 0, executionTime: 0, 
-                        deadline: 0, pages: 0})
+                        state: 'a caminho', ownQuantum: processValues.quantum,
+                        arriveTime: 0, overload: 0, executionTime: 0, 
+                        deadline: 0, pages: 0, brokeDeadline: false,
+                        turnaround: 0})
               }
           processValues.setProcessStart(false)
           processValues.setProcessData(processes)
