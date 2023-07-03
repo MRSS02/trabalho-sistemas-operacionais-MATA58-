@@ -208,6 +208,14 @@ export default function Chart() {
                 if (executionHistoryCopy.length === 0 && processValues.time === 1) {
                 processDataCopy[queue[0]].state = 'executando'               
                 for (let i = 0; i < processDataCopy.length; i++) {
+                    if (processDataCopy[i].deadline > 0
+                    && processDataCopy[i].executionTime !== 0
+                    && processDataCopy[i].state !== 'a caminho') {
+                        processDataCopy[i].deadline -= 1;
+                    } else {
+                        if (processDataCopy[i].deadline === 0)
+                            processDataCopy[i].brokeDeadline = true;        
+                    }
                 currentExecution.push(processDataCopy[i].state)
                 }
                 executionHistoryCopy.push(currentExecution)
@@ -239,102 +247,20 @@ export default function Chart() {
                     queue.shift()
                     if (queue[0] === undefined) break;
                 } else if (processDataCopy[queue[0]].ownQuantum === 0) {
-                        processDataCopy[queue[0]].ownQuantum = processValues.quantum;
                         queue.push(queue[0]);
                         queue.shift();
                         processDataCopy[queue[0]].overload =  processValues.sobrecarga;
 
                 }
  
-                 /* const currentExecution:Array<string> = []
-                 for (let i = 0; i < processDataCopy.length; i++) {
-                    if (processDataCopy[i].arriveTime > 0) {
-                        processDataCopy[i].arriveTime -= 1
-                    } else {
-                        if (processDataCopy[i].state === 'a caminho') 
-                            processDataCopy[i].state = 'espera'
-                                if (processDataCopy[i].state === 'executando' &&
-                                            processDataCopy[i].executionTime === 0)
-                                        processDataCopy[i].state = 'finalizado'
-                                if (!queue.includes(i) && 
-                                        processDataCopy[i].state !== 'finalizado') 
-                                queue.push(i) 
-                                for (let i = queue.length - 1; i > 0; i--) {
-                                            if((processDataCopy[queue[i]].state !== 'executando' ||
-                                            processDataCopy[queue[i]].overload > 0) &&
-                                            (processDataCopy[queue[i - 1]].state !== 'executando' ||
-                                            processDataCopy[queue[i - 1]].overload > 0) &&
-                                            processDataCopy[queue[i]].deadline < 
-                                            processDataCopy[queue[i - 1]].deadline) 
-                                                [queue[i], queue[i - 1]] = [queue[i - 1], queue[i]]
-                                            else if ((processDataCopy[queue[i]].state !== 'executando' ||
-                                            processDataCopy[queue[i]].overload > 0) && i > 1 
-                                            && (processDataCopy[queue[i - 1]].state !== 'executando' 
-                                            || processDataCopy[queue[i - 1]].overload > 0) 
-                                            && processDataCopy[queue[i]].deadline < 
-                                            processDataCopy[queue[i - 2]].deadline)
-                                                [queue[i], queue[i - 2]] = [queue[i - 2], queue[i]]
-                                        }
-                                    
-                    }    
-                }
-                if (executionHistoryCopy.length === 0 && processValues.time === 1) {
-                processDataCopy[queue[0]].state = 'executando'               
                 for (let i = 0; i < processDataCopy.length; i++) {
-                currentExecution.push(processDataCopy[i].state)
-                }
-                executionHistoryCopy.push(currentExecution)
-                }
-                if (queue[0] === undefined) break;
-                for (let i = 0; i < queue.length; i++) {
-                    if (processDataCopy[queue[i]].state !== 'finalizado' &&
-                    processDataCopy[queue[i]].state !== 'a caminho')
-                        processDataCopy[queue[i]].turnaround += 1
-                }
-                if ((processDataCopy[queue[queue.length - 1]].state === 'executando' &&
-                processDataCopy[queue[queue.length - 1]].ownQuantum === 0) || 
-                (queue.length > 1 && processDataCopy[queue[queue.length - 1]].state === 'executando')) {
-                    processDataCopy[queue[queue.length - 1]].state = 'espera'
-                    processDataCopy[queue[0]].ownQuantum = processValues.quantum;
-                }
-                if (processDataCopy[queue[0]].overload > 0) {
-                    processDataCopy[queue[0]].state = 'sobrecarga';
-                    processDataCopy[queue[0]].overload -= 1;
-                    break
-                }
-                console.log(processDataCopy)
-                processDataCopy[queue[0]].state = 'executando';  
-                processDataCopy[queue[0]].executionTime -= 1;
-                processDataCopy[queue[0]].ownQuantum -= 1;
-                if (processDataCopy[queue[0]].executionTime === 0) {
-                    queue.shift()
-                    if (queue[0] === undefined) break;
-                } else if (processDataCopy[queue[0]].ownQuantum === 0) {
-                        queue.push(queue[0]);
-                        queue.shift();
-                        processDataCopy[queue[0]].overload =  processValues.sobrecarga;
-
-                }
-                for (let i = 0; i < queue.length; i++) {
-                    if (i > 0 && 
-                    processDataCopy[queue[i]].state === 'executando') 
-                    processDataCopy[queue[i]].state = 'espera'
-                }
-                if (processDataCopy[queue[0]].executionTime === 0) {
-                    queue.shift()
-                    if (queue[0] === undefined) break;
-                } else if (processDataCopy[queue[0]].ownQuantum === 0) {
-                        queue.push(queue[0]);
-                        queue.shift();
-
-                } */
-
-                for (let i = 0; i < queue.length; i++) {
-                    if (processDataCopy[queue[i]].deadline > 0
-                    && processDataCopy[queue[i]].executionTime !== 0) {
-                        processDataCopy[queue[i]].deadline -= 1;
+                    if (processDataCopy[i].deadline > 0
+                    && processDataCopy[i].executionTime !== 0
+                    && processDataCopy[i].state !== 'a caminho') {
+                        processDataCopy[i].deadline -= 1;
                     } else {
-                        processDataCopy[queue[i]].brokeDeadline = true;        
+                        if (processDataCopy[i].deadline === 0)
+                            processDataCopy[i].brokeDeadline = true;        
                     }
                 }
 
