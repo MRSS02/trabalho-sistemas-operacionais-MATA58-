@@ -51,6 +51,12 @@ function renderPages(pages: IPage[]) {
   };
 }
 
+function currentUsage(pages: IPage[]) {
+  return pages.reduce((acc, page) => {
+    return acc + page.size;
+  }, 0);
+}
+
 export default function Memory() {
   // const [ramState, setRamState] = useState<IPage[]>([]);
 
@@ -59,11 +65,6 @@ export default function Memory() {
   const [ramState, setRamState] = useState({
     size: 32,
     pages: [] as IPage[],
-    currentUsage: (pages: IPage[]) => {
-      return pages.reduce((acc, page) => {
-        return acc + page.size;
-      }, 0);
-    },
   });
 
   const data = useContext(ProcessProvider);
@@ -92,17 +93,18 @@ export default function Memory() {
     if (currentExecution) {
       if (hasChanged.color !== currentExecution.color) {
         if (
-          ramState.currentUsage(ramState.pages) + currentExecution.size >
-          32
+          currentUsage(ramState.pages) + currentExecution.size >
+          ramState.size
         ) {
+          const pagesRemovedPages = ramState.pages;
+          pagesRemovedPages.shift();
           setRamState((prev) => {
-            const pagesRemovedPages = prev.pages;
-            pages.shift();
             return {
               ...prev,
               pages: pagesRemovedPages,
             };
           });
+          return;
         }
 
         setRamState((prev) => {
