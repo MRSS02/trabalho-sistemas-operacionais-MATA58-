@@ -174,6 +174,7 @@ export default function Chart() {
                 case 'EDF':
 
                 const currentExecution:Array<string> = []
+
                 for (let i = 0; i < processDataCopy.length; i++) {
                     if (processDataCopy[i].arriveTime > 0) {
                         processDataCopy[i].arriveTime -= 1
@@ -208,6 +209,20 @@ export default function Chart() {
                 if (executionHistoryCopy.length === 0 && processValues.time === 1) {
                 processDataCopy[queue[0]].state = 'executando'               
                 for (let i = 0; i < processDataCopy.length; i++) {
+                    /*if (processDataCopy[i].deadline > 0
+                    && processDataCopy[i].executionTime !== 0
+                    && processDataCopy[i].state !== 'a caminho') {
+                        processDataCopy[i].deadline -= 1;
+                    } else {
+                        if (processDataCopy[i].deadline === 0)
+                            processDataCopy[i].brokeDeadline = true;        
+                    } */
+                currentExecution.push(processDataCopy[i].state)
+                }
+                executionHistoryCopy.push(currentExecution)
+                }
+                if (queue[0] === undefined) break;
+                for (let i = 0; i < processDataCopy.length; i++) {
                     if (processDataCopy[i].deadline > 0
                     && processDataCopy[i].executionTime !== 0
                     && processDataCopy[i].state !== 'a caminho') {
@@ -216,12 +231,7 @@ export default function Chart() {
                         if (processDataCopy[i].deadline === 0)
                             processDataCopy[i].brokeDeadline = true;        
                     }
-                currentExecution.push(processDataCopy[i].state)
-                }
-                executionHistoryCopy.push(currentExecution)
-                }
-                if (queue[0] === undefined) break;
-                
+                }  
                 for (let i = 0; i < queue.length; i++) {
                     if (i > 0 && processDataCopy[queue[i]].state !== 'a caminho')
                         processDataCopy[queue[i]].state = 'espera'
@@ -251,17 +261,6 @@ export default function Chart() {
                         queue.shift();
                         processDataCopy[queue[0]].overload =  processValues.sobrecarga;
 
-                }
- 
-                for (let i = 0; i < processDataCopy.length; i++) {
-                    if (processValues.executionHistory.length > 1 && processDataCopy[i].deadline > 0
-                    && processDataCopy[i].executionTime !== 0
-                    && processDataCopy[i].state !== 'a caminho') {
-                        processDataCopy[i].deadline -= 1;
-                    } else {
-                        if (processDataCopy[i].deadline === 0)
-                            processDataCopy[i].brokeDeadline = true;        
-                    }
                 }
 
                 }
