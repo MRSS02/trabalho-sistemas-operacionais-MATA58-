@@ -34,7 +34,7 @@ function renderPages(pages: IPage[]) {
 
   let counter = 1;
 
-  pages.forEach((page) => {
+  pages?.forEach((page) => {
     for (let i = 0; i < page.size; i++) {
       cellsPages.push(
         <div className="cell">
@@ -51,86 +51,20 @@ function renderPages(pages: IPage[]) {
   };
 }
 
-class Ram {
-  size: number;
-  RamJSX: any;
-  currentProcesses: any;
-
-  constructor(size: number) {
-    this.size = size;
-    this.RamJSX = this.render();
-    this.currentProcesses = [];
-  }
-
-  render(): any {
-    let cells = [];
-
-    for (let i = 0; i < this.size; i++) {
-      cells.push(
-        <div className="cell">
-          <span>{i + 1}</span>
-        </div>
-      );
-    }
-
-    return (this.RamJSX = cells);
-  }
-
-  insertProcess(page: any): any {
-    const current = [...this.currentProcesses, page];
-    this.currentProcesses = current;
-
-    const currentSize = current.reduce((acc: any, curr: any) => {
-      return acc + curr.size;
-    }, 0);
-
-    let cells = [] as any;
-
-    let counter = 1;
-
-    for (let i = 0; i < this.size; i++) {
-      if (i < currentSize) {
-        current.forEach((process: any) => {
-          cells.push(
-            <div className="cell">
-              <span>{counter++}</span>
-              <div
-                className="fill"
-                style={{ backgroundColor: process.color }}
-              ></div>
-            </div>
-          );
-        });
-      } else {
-        cells.push(
-          <div className="cell">
-            <span>{i + 1}</span>
-          </div>
-        );
-      }
-    }
-
-    return (this.RamJSX = cells);
-  }
-
-  removeProcess(page: any): any {
-    let cells = [];
-
-    for (let i = 0; i < this.size; i++) {
-      cells.push(
-        <div className="cell">
-          <span>{i + 1}</span>
-        </div>
-      );
-    }
-
-    return (this.RamJSX = cells);
-  }
-}
-
 export default function Memory() {
-  const ram = new Ram(32);
-  const [ramState, setRamState] = useState(ram);
+  // const [ramState, setRamState] = useState<IPage[]>([]);
+
+  const [hasChanged, setHasChanged] = useState({} as IPage);
+
+  const [ramState, setRamState] = useState({
+    size: 32,
+    pages: [] as IPage[],
+    currentUsage: (pages: IPage[]) => {
+      return pages.reduce((acc, page) => {
+        return acc + page.size;
+      }, 0);
+    },
+  });
 
   const data = useContext(ProcessProvider);
 
@@ -152,32 +86,46 @@ export default function Memory() {
     }
   });
 
+  const currentExecution = pages.find((page) => page.state === "executando");
+
   useEffect(() => {
-    pages.map((page) => {
-      ram.insertProcess(pages[page.id]);
-      setRamState(ram);
-    });
-  }, [data.processData]);
+    if (currentExecution) {
+      if (hasChanged.color !== currentExecution.color) {
+        if (
+          ramState.currentUsage(ramState.pages) + currentExecution.size >
+          32
+        ) {
+          setRamState((prev) => {
+            const pagesRemovedPages = prev.pages;
+            pages.shift();
+            return {
+              ...prev,
+              pages: pagesRemovedPages,
+            };
+          });
+        }
+
+        setRamState((prev) => {
+          return {
+            ...prev,
+            pages: [...prev.pages, currentExecution],
+          };
+        });
+        setHasChanged(currentExecution);
+      }
+    }
+  }, [pages]);
 
   return (
     <div className="memory-container">
       <div className="ram">
         <h2>Memória de Ram</h2>
-        <div className="table">{ramState.RamJSX}</div>
+        <div className="table">{RenderTable(33, ramState.pages)}</div>
       </div>
-
-      <button
-        onClick={() => {
-          ram.insertProcess(pages[1]);
-          setRamState(ram);
-        }}
-      >
-        Teste
-      </button>
 
       <div className="disco">
         <h2>Memória de Disco</h2>
-        <div className="table">{RenderTable(64, pages)}</div>
+        <div className="table">{RenderTable(65, pages)}</div>
       </div>
     </div>
   );
