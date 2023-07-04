@@ -254,7 +254,7 @@ export default function Chart() {
                 }
  
                 for (let i = 0; i < processDataCopy.length; i++) {
-                    if (processDataCopy[i].deadline > 0
+                    if (processValues.executionHistory.length > 1 && processDataCopy[i].deadline > 0
                     && processDataCopy[i].executionTime !== 0
                     && processDataCopy[i].state !== 'a caminho') {
                         processDataCopy[i].deadline -= 1;
