@@ -8,9 +8,10 @@ export default function Chart() {
 
     const processValues = useContext(ProcessProvider)
 
-        useEffect(() => {
+        
+    useEffect(() => {
 
-                const queue:Array<number> = [...processValues.queue];
+                const queue:Array<number> = processValues.queue;
                 const processDataCopy = [...processValues.processData]
                 const executionHistoryCopy = [...processValues.executionHistory]
 
@@ -103,7 +104,7 @@ export default function Chart() {
                     processDataCopy[queue[i]].state !== 'a caminho')
                         processDataCopy[queue[i]].turnaround += 1
                 }
-               if (processDataCopy[queue[0]].executionTime === 0) {
+                if (processDataCopy[queue[0]].executionTime === 0) {
                     queue.shift()
                         if (queue[0] === undefined) break;
                     processDataCopy[queue[0]].state = 'executando';  
@@ -171,7 +172,7 @@ export default function Chart() {
 
                 }
                 break; }
-                case 'EDF':
+                case 'EDF': {
 
                 const currentExecution:Array<string> = []
 
@@ -262,7 +263,9 @@ export default function Chart() {
                         processDataCopy[queue[0]].overload =  processValues.sobrecarga;
 
                 }
+                break;                
 
+                }
                 }
                 processValues.setProcessData(processDataCopy)
                     processValues.setQueue(queue)
@@ -287,6 +290,7 @@ export default function Chart() {
                 }
                 turnaround = turnaround / processValues.numeroDeProcessos
                 processValues.setTurnaround(turnaround)
+                console.log(processValues.time, processValues.processData)
                 if (!allFinished) setTimeout(() => 
                         processValues.setTime((prevTime:number) => prevTime + 1), 1000)
 
