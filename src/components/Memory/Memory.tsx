@@ -63,7 +63,7 @@ export default function Memory() {
   const [hasChanged, setHasChanged] = useState({} as IPage);
 
   const [ramState, setRamState] = useState({
-    size: 32,
+    size: 51,
     pages: [] as IPage[],
   });
 
@@ -120,14 +120,16 @@ export default function Memory() {
 
   return (
     <div className="memory-container">
+      <small>Obs: Cada bloco representa uma página de 4k</small>
+
       <div className="ram">
         <h2>Memória de Ram</h2>
-        <div className="table">{RenderTable(33, ramState.pages)}</div>
+        <div className="table">{RenderTable(51, ramState.pages)}</div>
       </div>
 
       <div className="disco">
         <h2>Memória de Disco</h2>
-        <div className="table">{RenderTable(65, pages)}</div>
+        <div className="table">{RenderTable(151, pages)}</div>
       </div>
     </div>
   );
