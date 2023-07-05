@@ -1,6 +1,6 @@
 import "./style.scss";
 import { useContext } from 'react'
-import { useInitialDataStore } from "../../store";
+//import { useInitialDataStore } from "../../store";
 import { ProcessProvider } from "../../Providers/ProcessProvider"  
 
 
