@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { IntialDataType, EscalonamentoTypes, ProcessDataType } from "../types";
+import { EscalonamentoTypes, ProcessDataType } from "../types";
 
-export const useInitialDataStore = create<IntialDataType>((set) => ({
+/* export const useInitialDataStore = create<IntialDataType>((set) => ({
   numeroDeProcessos: undefined,
   sobrecarga: undefined,
   quantum: undefined,
@@ -13,7 +13,7 @@ export const useInitialDataStore = create<IntialDataType>((set) => ({
   setEscalonamento: (escalonameto: EscalonamentoTypes) => set({ escalonameto }),
   initialDataLock: false,
   setInitialDataLock: (initialDataLock: boolean) => set({ initialDataLock }),
-}));
+})); */
 
 // export const useProcessDataStore = create<ProcessDataType[] | undefined>((set) => ({
 
