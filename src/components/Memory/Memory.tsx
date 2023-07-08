@@ -205,7 +205,6 @@ export default function Memory() {
   return (
     <div className="memory-container">
       <small>Obs: Cada bloco representa uma página de 4k</small>
-      {JSON.stringify(trackLRU)}
       <div className="ram">
         <h2>Memória de Ram</h2>
         <div className="table">{RenderTable(51, ramState.pages)}</div>
