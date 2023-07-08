@@ -2,10 +2,20 @@ import { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import { ProcessProvider } from "../../Providers/ProcessProvider";
 
-const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
+const colors = [
+  "red",
+  "blue",
+  "green",
+  "yellow",
+  "purple",
+  "orange",
+  "pink",
+  "brown",
+  "gray",
+  "black",
+];
 
 interface IPage {
-  id: number;
   size: number;
   color: string;
   state: string;
@@ -58,28 +68,28 @@ function currentUsage(pages: IPage[]) {
 }
 
 export default function Memory() {
-  // const [ramState, setRamState] = useState<IPage[]>([]);
-
   const [hasChanged, setHasChanged] = useState({} as IPage);
 
+  const [trackLRU, setTrackLRU] = useState([] as IPage[]);
+
   const [ramState, setRamState] = useState({
-    size: 51,
+    size: 50,
     pages: [] as IPage[],
   });
 
   const data = useContext(ProcessProvider);
 
+  const algoritmo = data.algoritmoMemoria;
+
   const pages = data.processData.map((process, index) => {
     if (process.state !== "a caminho") {
       return {
-        id: index,
         size: process.pages,
         color: colors[index],
         state: process.state,
       };
     } else {
       return {
-        id: index,
         size: 0,
         color: colors[index],
         state: process.state,
@@ -90,30 +100,104 @@ export default function Memory() {
   const currentExecution = pages.find((page) => page.state === "executando");
 
   useEffect(() => {
-    if (currentExecution) {
-      if (hasChanged.color !== currentExecution.color) {
-        if (
-          currentUsage(ramState.pages) + currentExecution.size >
-          ramState.size
-        ) {
-          const pagesRemovedPages = ramState.pages;
-          pagesRemovedPages.shift();
+    if (algoritmo === "FIFO") {
+      if (currentExecution) {
+        // mudança de execução
+        if (hasChanged.color !== currentExecution.color) {
+          // já na ram
+          if (
+            ramState.pages.find(
+              (page) => page.color === currentExecution.color
+            ) !== undefined
+          ) {
+            return;
+          }
+
+          if (
+            currentUsage(ramState.pages) + currentExecution.size >
+            ramState.size
+          ) {
+            const pagesRemovedPages = ramState.pages;
+            pagesRemovedPages.shift();
+            setRamState((prev) => {
+              return {
+                ...prev,
+                pages: pagesRemovedPages,
+              };
+            });
+            return;
+          }
+
           setRamState((prev) => {
             return {
               ...prev,
-              pages: pagesRemovedPages,
+              pages: [...prev.pages, currentExecution],
             };
           });
-          return;
+          setHasChanged(currentExecution);
         }
+      }
+    }
 
-        setRamState((prev) => {
-          return {
-            ...prev,
-            pages: [...prev.pages, currentExecution],
-          };
-        });
-        setHasChanged(currentExecution);
+    if (algoritmo === "LRU") {
+      if (currentExecution) {
+        if (hasChanged.color !== currentExecution.color) {
+          // já na ram
+          if (
+            ramState.pages.find(
+              (page) => page.color === currentExecution.color
+            ) !== undefined
+          ) {
+            return;
+          }
+          // verificar se a página já está na lista do LRU, se estive coloca no topo
+          if (
+            trackLRU.find((page) => page.color === currentExecution.color) ===
+            undefined
+          ) {
+            setTrackLRU((prev) => {
+              return [...prev, currentExecution];
+            });
+          } else {
+            // colocar a página no topo da lista
+            const index = trackLRU.findIndex(
+              (page) => page.color === currentExecution.color
+            );
+            const page = trackLRU[index];
+            trackLRU.splice(index, 1);
+            trackLRU.unshift(page);
+          }
+
+          if (
+            currentUsage(ramState.pages) + currentExecution.size >
+            ramState.size
+          ) {
+            const pageToRemove = trackLRU.find((page) => {
+              return (
+                ramState.pages.find(
+                  (ramPage) => ramPage.color === page.color
+                ) === undefined
+              );
+            });
+
+            setRamState((prev) => {
+              return {
+                ...prev,
+                pages: prev.pages.filter(
+                  (page) => page.color !== pageToRemove?.color
+                ),
+              };
+            });
+            return;
+          }
+          setRamState((prev) => {
+            return {
+              ...prev,
+              pages: [...prev.pages, currentExecution],
+            };
+          });
+          setHasChanged(currentExecution);
+        }
       }
     }
   }, [pages]);
@@ -121,7 +205,7 @@ export default function Memory() {
   return (
     <div className="memory-container">
       <small>Obs: Cada bloco representa uma página de 4k</small>
-
+      {JSON.stringify(trackLRU)}
       <div className="ram">
         <h2>Memória de Ram</h2>
         <div className="table">{RenderTable(51, ramState.pages)}</div>
