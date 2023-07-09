@@ -150,46 +150,49 @@ export default function Memory() {
           ) {
             return;
           }
-          // verificar se a página já está na lista do LRU, se estive coloca no topo
+          // verificar se a página já está na lista do LRU
           if (
             trackLRU.find((page) => page.color === currentExecution.color) ===
             undefined
           ) {
             setTrackLRU((prev) => {
-              return [...prev, currentExecution];
+              return [currentExecution, ...prev];
             });
           } else {
             // colocar a página no topo da lista
-            const index = trackLRU.findIndex(
+            const changeLRUState = trackLRU;
+            const index = changeLRUState.findIndex(
               (page) => page.color === currentExecution.color
             );
-            const page = trackLRU[index];
-            trackLRU.splice(index, 1);
-            trackLRU.unshift(page);
+
+            const page = changeLRUState[index];
+
+            changeLRUState.splice(index, 1);
+            changeLRUState.unshift(page);
+
+            setTrackLRU(changeLRUState);
           }
 
           if (
             currentUsage(ramState.pages) + currentExecution.size >
             ramState.size
           ) {
-            const pageToRemove = trackLRU.find((page) => {
-              return (
-                ramState.pages.find(
-                  (ramPage) => ramPage.color === page.color
-                ) === undefined
-              );
-            });
+            // get the lest element of the list
+            const pageToRemove = trackLRU[trackLRU.length - 1];
+
+            const pagesRemovedPages = ramState.pages.filter(
+              (page) => page.color !== pageToRemove?.color
+            );
 
             setRamState((prev) => {
               return {
                 ...prev,
-                pages: prev.pages.filter(
-                  (page) => page.color !== pageToRemove?.color
-                ),
+                pages: pagesRemovedPages,
               };
             });
             return;
           }
+
           setRamState((prev) => {
             return {
               ...prev,
