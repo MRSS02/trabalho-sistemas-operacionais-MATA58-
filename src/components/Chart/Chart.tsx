@@ -192,6 +192,10 @@ export default function Chart() {
                     }    
                 }
                  for (let i = queue.length - 1; i > 0; i--) {
+                                            if(i > 1 && processDataCopy[queue[i]].overload > 0) {
+                                                processDataCopy[queue[0]].overload =  processDataCopy[queue[i]].overload
+                                                processDataCopy[queue[i]].overload = 0
+                                            }
                                             if(processDataCopy[queue[i]].deadline < 
                                             processDataCopy[queue[i - 1]].deadline &&
                                             (processDataCopy[queue[i]].state === 'espera' || 
